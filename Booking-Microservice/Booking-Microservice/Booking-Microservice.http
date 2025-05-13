@@ -1,0 +1,6 @@
+@Booking_Microservice_HostAddress = http://localhost:5141
+
+GET {{Booking_Microservice_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

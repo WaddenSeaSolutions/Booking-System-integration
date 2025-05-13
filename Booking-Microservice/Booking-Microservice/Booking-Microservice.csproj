@@ -4,10 +4,9 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Booking_Application</RootNamespace>
-    <UserSecretsId>c72f771a-5590-496c-b0e5-1ddf28c0c18d</UserSecretsId>
+    <RootNamespace>Booking_Microservice</RootNamespace>
+    <UserSecretsId>7de190f9-7216-4c9c-b54b-3b7d1e3ea084</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-namespace Booking_Application
+namespace User_Microservice
 {
     public class WeatherForecast
     {

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking-Microservice", "Booking-Microservice\Booking-Microservice.csproj", "{CDE50735-539B-4AF7-93C4-26AAF5EEF6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User-Microservice", "User-Microservice\User-Microservice.csproj", "{FCCF3830-AFFB-4584-BE22-064B01FDD764}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDE50735-539B-4AF7-93C4-26AAF5EEF6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDE50735-539B-4AF7-93C4-26AAF5EEF6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDE50735-539B-4AF7-93C4-26AAF5EEF6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDE50735-539B-4AF7-93C4-26AAF5EEF6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCCF3830-AFFB-4584-BE22-064B01FDD764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCCF3830-AFFB-4584-BE22-064B01FDD764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCCF3830-AFFB-4584-BE22-064B01FDD764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCCF3830-AFFB-4584-BE22-064B01FDD764}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED743E10-6353-4366-B1BE-E19450953780}
+	EndGlobalSection
+EndGlobal
