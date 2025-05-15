@@ -1,25 +1,40 @@
-﻿using Booking_Microservice.Domain.Models;
+﻿using Booking_Microservice.Application.Interfaces;
+using Booking_Microservice.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace Booking_Microservice.API.Controllers
 {
+    [Route("api/Booking")]
+    [ApiController]
     public class BookingController
     {
-        public Task<Booking> CreateBooking(Booking booking)
+        private readonly IBookingService _bookingService;
+        public BookingController(IBookingService bookingService) 
         {
-            throw new NotImplementedException();
+            _bookingService = bookingService;
         }
 
+        [HttpPost]
+        public Task<Booking> CreateBooking(Booking booking)
+        {
+            return _bookingService.CreateBooking(booking);
+        }
+        [HttpDelete]
         public Task<bool> DeleteBookingAsync(int id)
         {
-            throw new NotImplementedException();
+            return _bookingService.DeleteBookingAsync(id);
         }
+        [HttpGet]
         public Task<IEnumerable<Booking[]>> GetAllBookings()
         {
-            throw new NotImplementedException();
+            return _bookingService.GetAllBookings();
         }
-        public Task<bool> UpdateBookingAsync(Booking booking)
+
+        [HttpGet("/{id}")]
+        public async Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
         {
-            throw new NotImplementedException();
+            return await _bookingService.GetBookingsByUserId(userId);
         }
     }
 }

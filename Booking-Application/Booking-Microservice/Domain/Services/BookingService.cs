@@ -5,24 +5,29 @@ namespace Booking_Microservice.Domain.Services
 {
     public class BookingService : IBookingService
     {
+        private readonly IBookingRepository _bookingRepository;
+        public BookingService(IBookingRepository bookingRepository)
+        {
+            _bookingRepository = bookingRepository;
+        }
         public Task<Booking> CreateBooking(Booking booking)
         {
-            throw new NotImplementedException();
+            return _bookingRepository.CreateBooking(booking);
         }
 
         public Task<bool> DeleteBookingAsync(int id)
         {
-            throw new NotImplementedException();
+            return _bookingRepository.DeleteBookingAsync(id);
         }
 
         public Task<IEnumerable<Booking[]>> GetAllBookings()
         {
-            throw new NotImplementedException();
+            return _bookingRepository.GetAllBookings();
         }
 
-        public Task<bool> UpdateBookingAsync(Booking booking)
+        public Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
         {
-            throw new NotImplementedException();
+            return _bookingRepository.GetBookingsByUserId(userId);
         }
     }
 }
