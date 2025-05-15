@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  user-microservice:
+    build:
+      context: ./Booking-Application/User-Microservice
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=server=userdb;port=3306;database=userdb;user=myuser;password=mypassword
+    depends_on:
+      - userdb
+    restart: unless-stopped
+
+  booking-microservice:
+    build:
+      context: ./Booking-Application/Booking-Microservice
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=server=bookingdb;port=3306;database=bookingdb;user=myuser;password=mypassword
+    depends_on:
+      - bookingdb
+    restart: unless-stopped
+
+  userdb:
+    image: mariadb:latest
+    container_name: userdb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: userdb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3307:3306"
+
+  bookingdb:
+    image: mariadb:latest
+    container_name: bookingdb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bookingdb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3308:3306"
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Expose MongoDB port
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  default:
+    driver: bridge
