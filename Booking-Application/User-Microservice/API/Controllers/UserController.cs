@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using User_Microservice.Applications.Interfaces;
 using User_Microservice.Domain.Models;
 using User_Microservice.Domain.Services;
 using User_Microservice.Domain.DTO;
@@ -7,21 +8,21 @@ namespace User_Microservice.API.Controllers;
 
 public class UserController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
-    public UserController(UserService userService)
+    public UserController(IUserService userService)
     {
         _userService = userService;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] User user)
     {
         try
         {
-            User user = _userService.Register(request.Username, request.Email, request.Password);
+            User registeredUser = _userService.Register(user);
 
-            return Ok(new { user.Id, user.Username, user.Email });
+            return Ok(new { registeredUser.Id, registeredUser.Username, registeredUser.Email });
         }
         catch (UnauthorizedAccessException ex)
         {

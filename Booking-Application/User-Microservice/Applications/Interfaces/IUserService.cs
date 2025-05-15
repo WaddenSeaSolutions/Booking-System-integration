@@ -1,10 +1,11 @@
 using User_Microservice.Domain.DTO;
+using User_Microservice.Domain.Models;
 
 namespace User_Microservice.Applications.Interfaces;
 
 public interface IUserService
 {
-    bool Register(UserDTO user);
-    bool Login(UserDTO user);
-    bool Logout(UserDTO user);
+    User Register(User user);
+    User Login(string username, string password);
+    User Logout(UserDTO user);
 }

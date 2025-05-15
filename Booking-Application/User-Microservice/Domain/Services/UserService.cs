@@ -1,9 +1,11 @@
+using User_Microservice.Applications.Interfaces;
+using User_Microservice.Domain.DTO;
 using User_Microservice.Domain.Models;
 using User_Microservice.Infrastructure.Repositories;
 
 namespace User_Microservice.Domain.Services;
 
-public class UserService
+public class UserService: IUserService
 {
 
         private readonly UserRepository _userRepository;
@@ -14,16 +16,10 @@ public class UserService
         }
 
 
-        public User Register(string username, string email, string password)
+        public User Register(User user)
         {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
-            var user = new User
-            {
-                Username = username,
-                Email = email,
-                Password = hashedPassword
-            };
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = hashedPassword;
 
             _userRepository.RegisterUser(user);
 
@@ -47,5 +43,10 @@ public class UserService
             }
 
             return user;
+        }
+
+        public User Logout(UserDTO user)
+        {
+            throw new NotImplementedException();
         }
 }
