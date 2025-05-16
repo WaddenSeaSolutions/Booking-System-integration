@@ -1,0 +1,16 @@
+{
+  "Routes": [
+    {
+        "UpstreamPathTemplate": "/api/user",
+        "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+        "DownstreamPathTemplate": "/api/booking/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "user-microservice",
+            "Port": 80
+          }
+        ]
+    }]
+
+}

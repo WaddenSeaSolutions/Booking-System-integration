@@ -1,28 +1,56 @@
 ﻿using Booking_Microservice.Application.Interfaces;
 using Booking_Microservice.Domain.Models;
+using Dapper;
+using MySqlConnector;
 
 namespace Booking_Microservice.Infrastructure.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
-        public Task<Booking> CreateBooking(Booking booking)
+        private readonly MySqlConnection _connection;
+
+        public async Task<Booking> CreateBooking(Booking booking)
         {
-            throw new NotImplementedException();
+            var sql = @"INSERT INTO Booking (UserId, StartTime, EndTime, Status)
+                VALUES (@UserId, @StartTime, @StartTime, @EndTime
+                returning";
+
+            var createdBooking = await _connection.ExecuteScalarAsync<Booking>(sql, booking);
+
+            return createdBooking;
         }
 
-        public Task<bool> DeleteBookingAsync(int id)
+        public async Task<bool> DeleteBookingAsync(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"DELETE FROM Booking WHERE Id = @Id";
+            var result = await _connection.ExecuteAsync(sql, id);
+
+            if (result != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public Task<IEnumerable<Booking[]>> GetAllBookings()
+        public async Task<IEnumerable<Booking[]>> GetAllBookings()
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * FROM Booking";
+
+            var bookings = await _connection.QueryAsync<Booking[]>(sql);
+
+            return bookings;
         }
 
-        public Task<bool> UpdateBookingAsync(Booking booking)
+        public async Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * FROM Booking WHERE UserId = @UserId";
+            var bookings = await _connection.QueryAsync<Booking[]>(sql, new { UserId = userId });
+            return bookings;
         }
+
+
     }
 }

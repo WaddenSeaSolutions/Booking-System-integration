@@ -6,7 +6,7 @@ namespace Booking_Microservice.Application.Interfaces
     {
         Task<Booking> CreateBooking(Booking booking);
         Task<IEnumerable<Booking[]>> GetAllBookings();
-        Task<bool> UpdateBookingAsync(Booking booking);
         Task<bool> DeleteBookingAsync(int id);
+        Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId);
     }
 }
