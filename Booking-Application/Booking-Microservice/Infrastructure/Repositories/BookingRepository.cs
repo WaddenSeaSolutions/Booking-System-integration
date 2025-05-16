@@ -8,6 +8,10 @@ namespace Booking_Microservice.Infrastructure.Repositories
     public class BookingRepository : IBookingRepository
     {
         private readonly MySqlConnection _connection;
+        public BookingRepository(MySqlConnection connection)
+        {
+            _connection = connection;
+        }
 
         public async Task<Booking> CreateBooking(Booking booking)
         {
