@@ -2,7 +2,7 @@
   "Routes": [
     {
         "UpstreamPathTemplate": "/api/user",
-        "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+        "UpstreamHttpMethod": [ "Get", "Post" ],
         "DownstreamPathTemplate": "/api/booking/{id}",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
@@ -12,5 +12,4 @@
           }
         ]
     }]
-
 }

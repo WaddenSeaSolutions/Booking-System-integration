@@ -2,7 +2,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/api/booking",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/booking",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -11,6 +11,39 @@
           "Port": 80
         }
       ]
+      // Sepperated so there is no requirement for auth for GET
+    },
+    { // Gets a single booking by the userid
+      "UpstreamPathTemplate": "/api/booking/{action}/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/booking/{action}/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-microservice",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/booking/{action}",
+      "UpstreamHttpMethod": [ "Post", "Delete" ],
+      "DownstreamPathTemplate": "/api/booking/{action}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-microservice",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     }
+
+
   ]
 }
