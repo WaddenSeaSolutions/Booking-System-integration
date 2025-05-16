@@ -1,0 +1,6 @@
+@Paddle_Court_Microservice_HostAddress = http://localhost:5020
+
+GET {{Paddle_Court_Microservice_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
