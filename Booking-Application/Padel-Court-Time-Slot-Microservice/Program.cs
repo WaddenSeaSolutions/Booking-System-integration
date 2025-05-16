@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 using Padel_Court_Time_Slot_Microservice.Application.Interfaces;
-using Padel_Court_Time_Slot_Microservice.Domain.Services;
+using Padel_Court_Time_Slot_Microservice.Application.Services;
 using Padel_Court_Time_Slot_Microservice.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
