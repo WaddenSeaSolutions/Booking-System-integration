@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-Gateway", "API-Gateway\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paddle-Court-Microservice", "Paddle-Court-Microservice\Paddle-Court-Microservice.csproj", "{A8875AA2-E017-495C-9601-330F597D07A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Padel-Court-Time-Slot-Microservice", "Padel-Court-Time-Slot-Microservice\Padel-Court-Time-Slot-Microservice.csproj", "{F1BA0134-82F8-4002-8E27-8AD6DC92A7DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A8875AA2-E017-495C-9601-330F597D07A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8875AA2-E017-495C-9601-330F597D07A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8875AA2-E017-495C-9601-330F597D07A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1BA0134-82F8-4002-8E27-8AD6DC92A7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1BA0134-82F8-4002-8E27-8AD6DC92A7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1BA0134-82F8-4002-8E27-8AD6DC92A7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1BA0134-82F8-4002-8E27-8AD6DC92A7DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
