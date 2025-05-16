@@ -66,8 +66,8 @@ services:
   api-gateway:
     image: api-gateway
     build:
-      context: .
-      dockerfile: Booking-Application/API-Gateway/Dockerfile
+      context: ./Booking-Application/API-Gateway
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     environment:
