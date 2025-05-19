@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Microservice.API.Controllers
 {
-    [Route("api/Booking")]
+    [Route("/api/booking")]
     [ApiController]
     public class BookingController
     {

@@ -6,6 +6,8 @@ using User_Microservice.Domain.DTO;
 
 namespace User_Microservice.API.Controllers;
 
+[Route("api/user")]
+[ApiController]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;

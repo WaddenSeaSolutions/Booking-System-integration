@@ -7,11 +7,10 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Fix the path to match your project structure
-COPY ["./Booking-Application/API-Gateway/API-Gateway.csproj", "."]
+COPY ["API-Gateway.csproj", "."]
 RUN dotnet restore "API-Gateway.csproj"
 
-COPY "./Booking-Application/API-Gateway/" "."
+COPY . .
 RUN dotnet build "API-Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
