@@ -29,6 +29,19 @@ services:
       - bookingdb
     restart: unless-stopped
 
+  paddle-court-microservice:
+    build:
+      context: ./Booking-Application/Paddle-Court-Microservice
+      dockerfile: Dockerfile
+    ports:
+        - "5003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MongoSettings__ConnectionString=mongodb://myuser:mypassword@paddlecourtdb:27017/paddlecourtdb 
+    depends_on:
+      - paddlecourtdb
+
   userdb:
     image: mariadb:latest
     container_name: userdb
@@ -51,14 +64,15 @@ services:
     ports:
       - "3308:3306"
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
+  paddlecourtdb:
+    image: mongo:6
+    container_name: paddlecourtdb
     ports:
-      - "27017:27017"  # Expose MongoDB port
+      - "27018:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: myuser
+      MONGO_INITDB_ROOT_PASSWORD: mypassword
+      MONGO_INITDB_DATABASE: paddlecourtdb
     volumes:
       - mongodb_data:/data/db
     restart: unless-stopped
