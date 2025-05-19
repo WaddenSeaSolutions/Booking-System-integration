@@ -8,12 +8,11 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Fix the path to match your project structure
-COPY ["API-Gateway.csproj", "."]
-RUN dotnet restore "./API-Gateway.csproj"
+COPY ["./Booking-Application/API-Gateway/API-Gateway.csproj", "."]
+RUN dotnet restore "API-Gateway.csproj"
 
-COPY . .
-WORKDIR "/src/Booking-Application/API-Gateway"
-RUN dotnet build "./API-Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY "./Booking-Application/API-Gateway/" "."
+RUN dotnet build "API-Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
