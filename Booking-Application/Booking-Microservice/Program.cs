@@ -1,7 +1,12 @@
+using EasyNetQ;
+using Paddle_Court_Microservice.Infrastructure.Messaging;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSingleton(RabbitHutch.CreateBus("host=rabbitmq"));
+builder.Services.AddScoped<PaddleCourtClient>();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
