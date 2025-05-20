@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authorization; // Add this using directive
+using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +9,6 @@ namespace API_Gateway.Extensions
 {
     public static class ServiceExtensions
     {
-
         public static IServiceCollection AddApiGatewayServices(this IServiceCollection services, IConfiguration configuration)
         {
             var authenticationProviderKey = configuration["AuthenticationProviderKey"];
@@ -31,6 +31,15 @@ namespace API_Gateway.Extensions
                 };
             });
 
+            // Define the "Anonymous" policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Anonymous", policy =>
+                {
+                    policy.RequireAssertion(context => true); // Always allows access
+                });
+            });
+
             services.AddOcelot(configuration);
             return services;
         }
@@ -38,7 +47,7 @@ namespace API_Gateway.Extensions
         public static WebApplication UseApiGateway(this WebApplication app)
         {
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization(); // This order is important!
             app.UseOcelot().Wait();
             return app;
         }

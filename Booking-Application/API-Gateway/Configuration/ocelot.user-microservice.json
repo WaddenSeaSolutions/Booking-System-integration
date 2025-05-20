@@ -1,28 +1,28 @@
 {
-  "Routes": [
-    {
-      "UpstreamPathTemplate": "/api/user/register",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/user/register",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+    "Routes": [
         {
-          "Host": "user-microservice",
-          "Port": 8080
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/user/login",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/user/login",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "UpstreamPathTemplate": "/api/user/register",
+            "UpstreamHttpMethod": [ "Post" ],
+            "DownstreamPathTemplate": "/api/user/register",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "user-microservice",
+                    "Port": 8080
+                }
+            ]
+        },
         {
-          "Host": "user-microservice",
-          "Port": 8080
+            "UpstreamPathTemplate": "/api/user/login",
+            "UpstreamHttpMethod": [ "Post" ],
+            "DownstreamPathTemplate": "/api/user/login",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "user-microservice",
+                    "Port": 8080
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
