@@ -1,4 +1,4 @@
-﻿namespace Paddle_Court_Microservice.Domain.Requests
+﻿namespace Shared_Contracts.Domain.Requests
 {
     public class GetPaddleCourtsRequest
     {

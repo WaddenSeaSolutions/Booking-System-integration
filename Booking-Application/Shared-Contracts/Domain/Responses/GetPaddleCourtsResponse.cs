@@ -1,4 +1,4 @@
-﻿using Booking_Microservice.Domain.DTOs;
+﻿using Shared_Contracts.Domain.DTOs;
 
 namespace Booking_Microservice.Domain.Responses
 {

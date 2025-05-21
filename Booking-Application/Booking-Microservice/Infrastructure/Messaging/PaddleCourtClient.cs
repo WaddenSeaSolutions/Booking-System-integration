@@ -1,4 +1,8 @@
-﻿using EasyNetQ;
+﻿
+using Booking_Microservice.Domain.Responses;
+using EasyNetQ;
+using Shared_Contracts.Domain.DTOs;
+using Shared_Contracts.Domain.Requests;
 
 namespace Paddle_Court_Microservice.Infrastructure.Messaging
 {
@@ -6,7 +10,7 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
     {
         private readonly IBus _bus;
 
-        public PaddleCourtServiceClient(IBus bus)
+        public PaddleCourtClient(IBus bus)
         {
             _bus = bus;
         }

@@ -10,10 +10,12 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the project file and restore dependencies
+COPY ../Shared.Contracts/Shared.Contracts.csproj ../Shared.Contracts/
 COPY ["Booking-Microservice.csproj", "."]
 RUN dotnet restore "./Booking-Microservice.csproj"
 
 # Copy the remaining source code
+COPY ../Shared.Contracts ../Shared.Contracts/
 COPY . .
 
 # Build the application

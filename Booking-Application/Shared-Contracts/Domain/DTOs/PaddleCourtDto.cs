@@ -1,4 +1,4 @@
-﻿namespace Paddle_Court_Microservice.Domain.DTOs
+﻿namespace Shared_Contracts.Domain.DTOs
 {
     public class PaddleCourtDto
     {

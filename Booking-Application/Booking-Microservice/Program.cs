@@ -1,4 +1,8 @@
+using Booking_Microservice.Application.Interfaces;
+using Booking_Microservice.Domain.Services;
+using Booking_Microservice.Infrastructure.Repositories;
 using EasyNetQ;
+using MySqlConnector;
 using Paddle_Court_Microservice.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +11,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton(RabbitHutch.CreateBus("host=rabbitmq"));
 builder.Services.AddScoped<PaddleCourtClient>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<MySqlConnection>(_ =>
+    new MySqlConnection(DBUtils.ProperlyFormattedConnectionString));
+
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

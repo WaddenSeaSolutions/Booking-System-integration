@@ -17,7 +17,21 @@ namespace Paddle_Court_Microservice.Infrastructure.Repositories
 
         public async Task<IEnumerable<PaddleCourt>> GetAllPaddleCourts()
         {
-            return await _paddleCourts.Find(_ => true).ToListAsync();
+            var courts = new List<PaddleCourt>()
+            {
+                new PaddleCourt
+                {
+                    Id = 1,
+                    Name = "Court 1",
+                },
+                new PaddleCourt
+                {
+                    Id = 2,
+                    Name = "Court 2",
+                }
+            };
+            return courts;
+            //return await _paddleCourts.Find(_ => true).ToListAsync();
         }
     }
 }

@@ -1,27 +1,34 @@
-﻿using EasyNetQ;
+﻿using Booking_Microservice.Domain.Responses;
+using EasyNetQ;
+using Microsoft.Extensions.DependencyInjection;
 using Paddle_Court_Microservice.Application.Interfaces;
-using Paddle_Court_Microservice.Domain.DTOs;
-using Paddle_Court_Microservice.Domain.Requests;
-using Paddle_Court_Microservice.Domain.Responses;
+using Shared_Contracts.Domain.DTOs;
+using Shared_Contracts.Domain.Requests;
+
 
 namespace Paddle_Court_Microservice.Infrastructure.Messaging
 {
     public class PaddleCourtResponder : BackgroundService
     {
         private readonly IBus _bus;
-        private readonly IPaddleCourtRepository _repository;
+        private readonly IServiceProvider _serviceProvider;
 
-        public PaddleCourtResponder(IBus bus, IPaddleCourtRepository repository)
+        public PaddleCourtResponder(IBus bus, IServiceProvider serviceProvider)
         {
             _bus = bus;
-            _repository = repository;
+            _serviceProvider = serviceProvider;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            Console.WriteLine("🟢 PaddleCourtResponder is running and listening for requests...");
             _bus.Rpc.RespondAsync<GetPaddleCourtsRequest, GetPaddleCourtsResponse>(async request =>
             {
-                var courts = await _repository.GetAllPaddleCourts();
+                Console.WriteLine("📨 Received request for paddle courts");
+                using var scope = _serviceProvider.CreateScope();
+                var repository = scope.ServiceProvider.GetRequiredService<IPaddleCourtRepository>();
+
+                var courts = await repository.GetAllPaddleCourts();
 
                 return new GetPaddleCourtsResponse
                 {
