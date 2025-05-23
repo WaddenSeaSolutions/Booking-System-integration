@@ -20,6 +20,7 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
             var request = new GetPaddleCourtsRequest();
 
             var response = await _bus.Rpc.RequestAsync<GetPaddleCourtsRequest, GetPaddleCourtsResponse>(request);
+            
 
             return response.Courts;
         }

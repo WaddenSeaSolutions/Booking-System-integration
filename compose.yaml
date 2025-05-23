@@ -3,8 +3,8 @@ version: '3.8'
 services:
   user-microservice:
     build:
-      context: ./Booking-Application/User-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Booking-Microservice/Dockerfile
     ports:
       - "5001:80"
     environment:
@@ -17,8 +17,8 @@ services:
 
   booking-microservice:
     build:
-      context: ./Booking-Application/Booking-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Booking-Microservice/Dockerfile
     ports:
       - "5002:80"
     environment:
@@ -27,20 +27,22 @@ services:
       - ConnectionStrings__DefaultConnection=server=bookingdb;port=3306;database=bookingdb;user=myuser;password=mypassword
     depends_on:
       - bookingdb
+      - rabbitmq
     restart: unless-stopped
 
   paddle-court-microservice:
     build:
-      context: ./Booking-Application/Paddle-Court-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Paddle-Court-Microservice/Dockerfile
     ports:
         - "5003:80"
-    environment:
+    environment:    
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - MongoSettings__ConnectionString=mongodb://myuser:mypassword@paddlecourtdb:27017/paddlecourtdb 
     depends_on:
       - paddlecourtdb
+      - rabbitmq
 
   userdb:
     image: mariadb:latest
@@ -75,6 +77,8 @@ services:
       MONGO_INITDB_DATABASE: paddlecourtdb
     volumes:
       - mongodb_data:/data/db
+    depends_on:
+      - rabbitmq
     restart: unless-stopped
 
   api-gateway:
@@ -93,8 +97,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbitpw
 
 volumes:
   mongodb_data:

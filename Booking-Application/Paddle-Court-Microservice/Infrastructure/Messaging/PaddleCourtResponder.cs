@@ -21,27 +21,34 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine("🟢 PaddleCourtResponder is running and listening for requests...");
-            _bus.Rpc.RespondAsync<GetPaddleCourtsRequest, GetPaddleCourtsResponse>(async request =>
-            {
-                Console.WriteLine("📨 Received request for paddle courts");
-                using var scope = _serviceProvider.CreateScope();
-                var repository = scope.ServiceProvider.GetRequiredService<IPaddleCourtRepository>();
-
-                var courts = await repository.GetAllPaddleCourts();
-
-                return new GetPaddleCourtsResponse
+            try
+            { 
+                _bus.Rpc.RespondAsync<GetPaddleCourtsRequest, GetPaddleCourtsResponse>(async request =>
                 {
-                    RequestId = request.RequestId,
-                    Courts = courts.Select(c => new PaddleCourtDto
-                    {
-                        Id = c.Id,
-                        Name = c.Name
-                    }).ToList()
-                };
-            });
+                    Console.WriteLine("📨 Received request for paddle courts");
+                    using var scope = _serviceProvider.CreateScope();
+                    var repository = scope.ServiceProvider.GetRequiredService<IPaddleCourtRepository>();
 
-            return Task.CompletedTask;
+                    var courts = await repository.GetAllPaddleCourts();
+
+                    return new GetPaddleCourtsResponse
+                    {
+                        RequestId = request.RequestId,
+                        Courts = courts.Select(c => new PaddleCourtDto
+                        {
+                            Id = c.Id,
+                            Name = c.Name
+                        }).ToList()
+                    };
+                });
+                Console.WriteLine(typeof(GetPaddleCourtsRequest).AssemblyQualifiedName);
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ Error registering RespondAsync: " + ex);
+                return Task.CompletedTask;
+            }
         }
     }
 }
