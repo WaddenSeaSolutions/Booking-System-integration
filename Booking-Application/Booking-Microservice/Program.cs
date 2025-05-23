@@ -18,6 +18,7 @@ builder.Services.AddScoped<MySqlConnection>(_ =>
 
 
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 

@@ -11,10 +11,12 @@ namespace User_Microservice.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, ITokenService tokenService)
     {
         _userService = userService;
+        _tokenService = tokenService;
     }
 
     [HttpPost("register")]
@@ -43,7 +45,9 @@ public class UserController : ControllerBase
         {
             User user = _userService.Login(request.Username, request.Password);
 
-            return Ok(new { user.Id, user.Username, user.Email });
+            var token = _tokenService.GenerateToken(user.Id.ToString(), user.Username);
+
+            return Ok(new { user.Id, user.Username, user.Email, Token = token });
         }
         catch (UnauthorizedAccessException ex)
         {

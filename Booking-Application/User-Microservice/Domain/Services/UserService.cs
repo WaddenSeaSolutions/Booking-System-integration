@@ -44,9 +44,4 @@ public class UserService: IUserService
 
             return user;
         }
-
-        public User Logout(UserDTO user)
-        {
-            throw new NotImplementedException();
-        }
 }

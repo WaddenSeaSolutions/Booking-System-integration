@@ -8,9 +8,16 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "user-microservice",
-                    "Port": 8080
+                    "Port": 80
                 }
-            ]
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "10s",
+                "PeriodTimespan": 10,
+                "Limit": 2
+            }
         },
         {
             "UpstreamPathTemplate": "/api/user/login",
@@ -20,9 +27,24 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "user-microservice",
-                    "Port": 8080
+                    "Port": 80
                 }
-            ]
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "10s",
+                "PeriodTimespan": 10,
+                "Limit": 2
+            }
         }
-    ]
+    ],
+    "GlobalConfiguration": {
+        "RateLimitOptions": {
+            "DisableRateLimitHeaders": false,
+            "QuotaExceededMessage": "You have send too many request, try again later",
+            "HttpStatusCode": 429,
+            "ClientIdHeader": "X-Client-ID"
+        }
+    }
 }
