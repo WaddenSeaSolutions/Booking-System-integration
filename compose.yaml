@@ -3,8 +3,8 @@ version: '3.8'
 services:
   user-microservice:
     build:
-      context: ./Booking-Application/User-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Booking-Microservice/Dockerfile
     ports:
       - "5001:80"
     environment:
@@ -19,8 +19,8 @@ services:
 
   booking-microservice:
     build:
-      context: ./Booking-Application/Booking-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Booking-Microservice/Dockerfile
     ports:
       - "5002:80"
     environment:
@@ -29,20 +29,22 @@ services:
       - ConnectionStrings__DefaultConnection=server=bookingdb;port=3306;database=bookingdb;user=myuser;password=mypassword
     depends_on:
       - bookingdb
+      - rabbitmq
     restart: unless-stopped
 
   paddle-court-microservice:
     build:
-      context: ./Booking-Application/Paddle-Court-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Paddle-Court-Microservice/Dockerfile
     ports:
         - "5003:80"
-    environment:
+    environment:    
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - MongoSettings__ConnectionString=mongodb://myuser:mypassword@paddlecourtdb:27017/paddlecourtdb 
     depends_on:
       - paddlecourtdb
+      - rabbitmq
 
   userdb:
     image: mariadb:latest
@@ -77,6 +79,8 @@ services:
       MONGO_INITDB_DATABASE: paddlecourtdb
     volumes:
       - mongodb_data:/data/db
+    depends_on:
+      - rabbitmq
     restart: unless-stopped
 
   api-gateway:
@@ -88,6 +92,15 @@ services:
       - "8080:8080"
     environment:
       AuthenticationProviderKey: "mMdAhocQbIAa1/4iD8W5BiDCD9Lxg9ULp4qROgJVN8oRZommyAsnRalnNlzWGbKGJItr/kh2jVd2d9brhSBAJttV7NE47dvyX6n36cFKlnz3k9AodqqVgH/S52oQMYamtI+HsQqBmsvZMqOE+oGlEIzJG9tmDZ1JE/qJHq+bXo3RCEuBf26dGuIG4DWpjh+G4xTVC7ZoByCmq5zTUUyTlFZCQ2483iJe1Thkem9mlzt3cOy8O5SYJBafIb0xdIBYEoHl56Z805fO/W4eAw+M5stSCUdJTBUtWbCiId9zSapmilb20sCg4l5xYTsaJImTfHlo0t9kF1o/RXwr1cw3zCPoyt9tjWhZ83LMsi1ydBg="
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbitpw
 
 volumes:
   mongodb_data:

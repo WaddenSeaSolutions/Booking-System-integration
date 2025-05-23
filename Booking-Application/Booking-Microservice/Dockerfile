@@ -9,20 +9,25 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy the project file and restore dependencies
-COPY ["Booking-Microservice.csproj", "."]
-RUN dotnet restore "./Booking-Microservice.csproj"
+# Copy csproj files
+COPY Booking-Microservice/Booking-Microservice.csproj Booking-Microservice/
+COPY Shared-Contracts/Shared-Contracts.csproj Shared-Contracts/
 
-# Copy the remaining source code
-COPY . .
+# Restore dependencies
+RUN dotnet restore Booking-Microservice/Booking-Microservice.csproj
 
-# Build the application
-RUN dotnet build "./Booking-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Copy all source files
+COPY Booking-Microservice/ Booking-Microservice/
+COPY Shared-Contracts/ Shared-Contracts/
+
+# Build the project
+WORKDIR /src/Booking-Microservice
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish the application
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Booking-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final runtime image
 FROM base AS final

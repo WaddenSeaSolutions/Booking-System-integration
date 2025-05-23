@@ -11,14 +11,19 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy just the project file and restore
-COPY Paddle-Court-Microservice.csproj ./
-RUN dotnet restore Paddle-Court-Microservice.csproj
+COPY Paddle-Court-Microservice/Paddle-Court-Microservice.csproj Paddle-Court-Microservice/
+COPY Shared-Contracts/Shared-Contracts.csproj Shared-Contracts/
+
+
+RUN dotnet restore Paddle-Court-Microservice/Paddle-Court-Microservice.csproj
 
 # Copy the rest of the source files
-COPY . ./
+COPY Paddle-Court-Microservice/ Paddle-Court-Microservice/
+COPY Shared-Contracts/ Shared-Contracts/
 
 # Build the project
-RUN dotnet build Paddle-Court-Microservice.csproj -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR /src/Paddle-Court-Microservice
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish

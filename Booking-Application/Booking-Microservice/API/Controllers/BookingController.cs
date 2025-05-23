@@ -1,6 +1,7 @@
 ﻿using Booking_Microservice.Application.Interfaces;
 using Booking_Microservice.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Paddle_Court_Microservice.Infrastructure.Messaging;
 
 
 namespace Booking_Microservice.API.Controllers
@@ -10,9 +11,11 @@ namespace Booking_Microservice.API.Controllers
     public class BookingController
     {
         private readonly IBookingService _bookingService;
-        public BookingController(IBookingService bookingService) 
+        private readonly PaddleCourtClient _paddleCourtClient;
+        public BookingController(IBookingService bookingService, PaddleCourtClient paddleCourtClient)
         {
             _bookingService = bookingService;
+            _paddleCourtClient = paddleCourtClient;
         }
 
         [HttpPost]
@@ -35,6 +38,14 @@ namespace Booking_Microservice.API.Controllers
         public async Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
         {
             return await _bookingService.GetBookingsByUserId(userId);
+        }
+
+        [HttpGet("GetPaddleCourts")]
+        public async Task<IActionResult> GetPaddleCourts()
+        {
+            var paddleCourts = await _paddleCourtClient.GetPaddleCourtsAsync();
+            Console.WriteLine("Paddle courts retrieved successfully.");
+            return new OkObjectResult(paddleCourts);
         }
     }
 }
