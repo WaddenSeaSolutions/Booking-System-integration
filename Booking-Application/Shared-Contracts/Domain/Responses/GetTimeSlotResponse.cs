@@ -2,9 +2,9 @@
 
 namespace Shared_Contracts.Domain.Responses
 {
-    public class GetPaddleCourtsResponse
+    public class GetTimeSlotResponse
     {
         public string RequestId { get; set; }
-        public List<PaddleCourtDto> Courts { get; set; } = new();
+        public List<TimeSlotDto> Times { get; set; } = new ();
     }
 }

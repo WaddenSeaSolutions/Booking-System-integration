@@ -1,5 +1,5 @@
 ﻿
-using Booking_Microservice.Domain.Responses;
+using Shared_Contracts.Domain.Responses;
 using EasyNetQ;
 using Shared_Contracts.Domain.DTOs;
 using Shared_Contracts.Domain.Requests;

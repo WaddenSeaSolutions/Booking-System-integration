@@ -1,9 +1,9 @@
-﻿using Booking_Microservice.Domain.Responses;
-using EasyNetQ;
+﻿using EasyNetQ;
 using Microsoft.Extensions.DependencyInjection;
 using Paddle_Court_Microservice.Application.Interfaces;
 using Shared_Contracts.Domain.DTOs;
 using Shared_Contracts.Domain.Requests;
+using Shared_Contracts.Domain.Responses;
 
 
 namespace Paddle_Court_Microservice.Infrastructure.Messaging
@@ -37,11 +37,11 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
                         Courts = courts.Select(c => new PaddleCourtDto
                         {
                             Id = c.Id,
-                            Name = c.Name
+                            Name = c.Name,
+                            Image = c.Image,
                         }).ToList()
                     };
                 });
-                Console.WriteLine(typeof(GetPaddleCourtsRequest).AssemblyQualifiedName);
                 return Task.CompletedTask;
             }
             catch (Exception ex)
