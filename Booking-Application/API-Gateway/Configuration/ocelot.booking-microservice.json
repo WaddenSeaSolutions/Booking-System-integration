@@ -42,6 +42,9 @@
                     "Port": 80
                 }
             ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
             "RateLimitOptions": {
                 "ClientWhitelist": [],
                 "EnableRateLimiting": true,
@@ -63,6 +66,9 @@
             ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer"
+            },
+            "AddClaimsToRequest": {
+                "Sub": "UserId"
             },
             "RateLimitOptions": {
                 "ClientWhitelist": [],
@@ -86,6 +92,9 @@
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer"
             },
+            "AddClaimsToRequest": {
+                "Sub": "UserId"
+            },
             "RateLimitOptions": {
                 "ClientWhitelist": [],
                 "EnableRateLimiting": true,
@@ -107,6 +116,9 @@
             ],
             "AuthenticationOptions": {
                 "AuthenticationProviderKey": "Bearer"
+            },
+            "AddClaimsToRequest": {
+                "Sub": "UserId"
             },
             "RateLimitOptions": {
                 "ClientWhitelist": [],

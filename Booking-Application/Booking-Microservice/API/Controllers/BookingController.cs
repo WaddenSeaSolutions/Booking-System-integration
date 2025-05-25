@@ -1,4 +1,5 @@
-﻿using Booking_Microservice.Application.Interfaces;
+﻿using Azure.Core;
+using Booking_Microservice.Application.Interfaces;
 using Booking_Microservice.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Paddle_Court_Microservice.Infrastructure.Messaging;
@@ -8,7 +9,7 @@ namespace Booking_Microservice.API.Controllers
 {
     [Route("/api/booking")]
     [ApiController]
-    public class BookingController
+    public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
         private readonly PaddleCourtClient _paddleCourtClient;
@@ -19,10 +20,28 @@ namespace Booking_Microservice.API.Controllers
         }
 
         [HttpPost]
-        public Task<Booking> CreateBooking(Booking booking)
+        public async Task<IActionResult> CreateBooking(Booking booking)
         {
-            return _bookingService.CreateBooking(booking);
+
+            if (!Request.Headers.TryGetValue("UserId", out var userIdHeaderValues))
+            {
+                return Unauthorized("User ID header is missing. Please ensure you are authenticated.");
+            }
+
+            // Gets the first value from the UserId header
+            var userIdString = userIdHeaderValues.FirstOrDefault();
+
+            // Check if the UserId header is present and not empty
+            if (string.IsNullOrEmpty(userIdString))
+            {
+                return Unauthorized("User ID header is empty.");
+            }
+            booking.UserId = int.Parse(userIdString);
+
+            return Ok(_bookingService.CreateBooking(booking));
         }
+
+
         [HttpDelete]
         public Task<bool> DeleteBookingAsync(int id)
         {
