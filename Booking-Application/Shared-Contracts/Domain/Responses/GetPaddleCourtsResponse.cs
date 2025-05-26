@@ -5,6 +5,6 @@ namespace Shared_Contracts.Domain.Responses
     public class GetPaddleCourtsResponse
     {
         public string RequestId { get; set; }
-        public List<PaddleCourtDto> Courts { get; set; } = new();
+        public List<PaddleCourtDto> Courts { get; set; }
     }
 }

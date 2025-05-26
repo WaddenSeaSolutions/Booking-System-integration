@@ -6,7 +6,7 @@
 
         static DBUtils()
         {
-            ProperlyFormattedConnectionString = "mongodb://myuser:mypassword@paddlecourtdb:27017/paddlecourtdb";
+            ProperlyFormattedConnectionString = "mongodb://myuser:mypassword@paddlecourtdb:27017/paddlecourtdb?authSource=admin";
 
         }
     }

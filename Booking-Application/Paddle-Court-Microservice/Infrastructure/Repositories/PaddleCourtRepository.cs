@@ -12,26 +12,15 @@ namespace Paddle_Court_Microservice.Infrastructure.Repositories
 
         public PaddleCourtRepository(IMongoDatabase database)
         {
-            _paddleCourts = database.GetCollection<PaddleCourt>("PaddleCourt");
+            _paddleCourts = database.GetCollection<PaddleCourt>("paddlecourt");
         }
 
         public async Task<IEnumerable<PaddleCourt>> GetAllPaddleCourts()
         {
-            var courts = new List<PaddleCourt>()
-            {
-                new PaddleCourt
-                {
-                    Id = 1,
-                    Name = "Court 1",
-                },
-                new PaddleCourt
-                {
-                    Id = 2,
-                    Name = "Court 2",
-                }
-            };
-            return courts;
-            //return await _paddleCourts.Find(_ => true).ToListAsync();
+            var paddlecourts = await _paddleCourts.Find(_ => true).ToListAsync();
+            Console.WriteLine("Paddle courts:");
+            
+            return paddlecourts;
         }
     }
 }
