@@ -1,5 +1,7 @@
--- SQL Script til at oprette 'bookings' tabellen i PostgreSQL
+-- Adding the extension btree_gist for the exclusion constraint
+CREATE EXTENSION btree_gist;
 
+-- Creating the bookings table with an exclusion constraint to prevent overlapping bookings
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
 

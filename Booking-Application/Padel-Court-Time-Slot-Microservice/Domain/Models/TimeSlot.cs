@@ -9,10 +9,13 @@ namespace Padel_Court_Time_Slot_Microservice.Domain.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        public string CourtId { get; set; }
+
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public DateTime Date { get; set; }
+
     }
 }

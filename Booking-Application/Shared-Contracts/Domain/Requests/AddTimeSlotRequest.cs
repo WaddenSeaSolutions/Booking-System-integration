@@ -1,0 +1,10 @@
+namespace Shared_Contracts.Domain.Requests
+{
+    public class AddTimeSlotRequest
+    {
+        public int CourtId { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+    }
+}

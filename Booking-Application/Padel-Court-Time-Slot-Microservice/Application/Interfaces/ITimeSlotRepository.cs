@@ -5,6 +5,8 @@ namespace Padel_Court_Time_Slot_Microservice.Application.Interfaces
 {
     public interface ITimeSlotRepository
     {
-        Task<IEnumerable<TimeSlot>> GetBookedTimeSlotsAsync();
+        Task<IEnumerable<TimeSlot>> GetAllTimeSlotsAsync();
+        Task AddTimeSlotAsync(TimeSlot timeSlot);
+
     }
 }

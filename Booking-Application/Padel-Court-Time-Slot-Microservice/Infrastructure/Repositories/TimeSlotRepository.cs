@@ -16,17 +16,15 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Repositories
             _timeSlots = database.GetCollection<TimeSlot>("TimeSlots");
         }
 
-        public async Task<IEnumerable<TimeSlot>> GetAvailableTimeSlotsAsync()
+        public async Task<IEnumerable<TimeSlot>> GetAllTimeSlotsAsync()
         {
-            var filter = Builders<TimeSlot>.Filter.Eq(t => t.IsAvailable, true);
-            return await _timeSlots.Find(filter).ToListAsync();
+            return await _timeSlots.Find(_ => true).ToListAsync();
         }
 
-        public Task<IEnumerable<TimeSlot>> GetBookedTimeSlotsAsync()
+        public async Task AddTimeSlotAsync(TimeSlot timeSlot)
         {
-
-
-            throw new NotImplementedException();
+            await _timeSlots.InsertOneAsync(timeSlot);
         }
+
     }
 }
