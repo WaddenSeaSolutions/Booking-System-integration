@@ -17,4 +17,7 @@ CREATE TABLE bookings (
 );
 
 ALTER TABLE bookings
-ADD CONSTRAINT UQ_CourtTimeSlot UNIQUE (court_id, start_time, end_time);
+ADD CONSTRAINT EXCL_CourtTimeOverlap EXCLUDE USING GIST (
+    court_id WITH =,                           -- The constraint applies to the same court
+    tsrange(start_time, end_time) WITH &&      -- And the time intervals must not overlap
+);

@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Padel_Court_Time_Slot_Microservice.Application.Interfaces;
 using Padel_Court_Time_Slot_Microservice.Domain.DTO;
+using Padel_Court_Time_Slot_Microservice.Domain.Models;
+using Shared_Contracts.Domain.DTOs;
 
 namespace Padel_Court_Time_Slot_Microservice.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/TimeSlotController")]
 public class TimeSlotController : ControllerBase
 {
     private readonly ITimeSlotService _timeSlotService;
@@ -15,10 +17,10 @@ public class TimeSlotController : ControllerBase
         _timeSlotService = timeSlotService;
     }
 
-    [HttpGet("available")]
-    public async Task<ActionResult<IEnumerable<AvailableTimeSlotDto>>> GetAvailableTimeSlots()
+    [HttpGet()]
+    public async Task<ActionResult<IEnumerable<TimeSlot>>> GetBookedTimeSlots()
     {
-        var slots = await _timeSlotService.GetAvailableTimeSlotsAsync();
+        var slots = await _timeSlotService.GetBookedTimeSlotsAsync();
         return Ok(slots);
     }
 }

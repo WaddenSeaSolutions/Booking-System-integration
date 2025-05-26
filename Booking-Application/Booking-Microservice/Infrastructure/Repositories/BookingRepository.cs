@@ -2,6 +2,7 @@
 using Booking_Microservice.Domain.Models;
 using Dapper;
 using MySqlConnector;
+using Npgsql;
 
 namespace Booking_Microservice.Infrastructure.Repositories
 {
@@ -15,46 +16,112 @@ namespace Booking_Microservice.Infrastructure.Repositories
 
         public async Task<Booking> CreateBooking(Booking booking)
         {
-            var sql = @"INSERT INTO Booking (UserId, StartTime, EndTime, Status)
-                VALUES (@UserId, @StartTime, @StartTime, @EndTime
-                returning";
+            var sql = @"
+                INSERT INTO bookings (
+                    user_id,
+                    court_id,
+                    total_price,
+                    start_time,
+                    end_time,
+                    status,
+                    created_at
+                )
+                VALUES (
+                    @UserId,
+                    @CourtId,
+                    @TotalPrice,
+                    @StartTime,
+                    @EndTime,
+                    @Status,
+                    @CreatedAt
+                )
+                RETURNING *;";
 
-            var createdBooking = await _connection.ExecuteScalarAsync<Booking>(sql, booking);
+            try
+            {
+                var createdBooking = await _connection.QuerySingleOrDefaultAsync<Booking>(sql, booking);
 
-            return createdBooking;
+                if (createdBooking == null)
+                {
+                    throw new InvalidOperationException("Booking creation failed, no data returned from database.");
+                }
+
+                return createdBooking;
+            }
+            catch (PostgresException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> DeleteBookingAsync(int id)
         {
-            var sql = @"DELETE FROM Booking WHERE Id = @Id";
-            var result = await _connection.ExecuteAsync(sql, id);
+            var sql = "DELETE FROM bookings WHERE id = @Id";
 
-            if (result != null)
+            try
             {
-                return true;
+                var rowsAffected = await _connection.ExecuteAsync(sql, new { Id = id });
+                return rowsAffected > 0;
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                throw;
             }
         }
 
-        public async Task<IEnumerable<Booking[]>> GetAllBookings()
+        public async Task<IEnumerable<Booking>> GetAllBookings()
         {
-            var sql = "SELECT * FROM Booking";
+            var sql = @"
+                SELECT
+                    id,
+                    user_id AS UserId,
+                    court_id AS CourtId,
+                    total_price AS TotalPrice,
+                    start_time AS StartTime,
+                    end_time AS EndTime,
+                    created_at AS CreatedAt,
+                    status
+                FROM bookings;";
 
-            var bookings = await _connection.QueryAsync<Booking[]>(sql);
-
-            return bookings;
+            try
+            {
+                var bookings = await _connection.QueryAsync<Booking>(sql);
+                return bookings;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        public async Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
+        public async Task<IEnumerable<Booking>> GetBookingsByUserId(int userId)
         {
-            var sql = "SELECT * FROM Booking WHERE UserId = @UserId";
-            var bookings = await _connection.QueryAsync<Booking[]>(sql, new { UserId = userId });
-            return bookings;
+            var sql = @"
+                SELECT
+                    id,
+                    user_id AS UserId,
+                    court_id AS CourtId,
+                    total_price AS TotalPrice,
+                    start_time AS StartTime,
+                    end_time AS EndTime,
+                    created_at AS CreatedAt,
+                    status
+                FROM bookings
+                WHERE user_id = @UserId;";
+
+            try
+            {
+                var bookings = await _connection.QueryAsync<Booking>(sql, new { UserId = userId });
+                return bookings;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
-
-
     }
 }

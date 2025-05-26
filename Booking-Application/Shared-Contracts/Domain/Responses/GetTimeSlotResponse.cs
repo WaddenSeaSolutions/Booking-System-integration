@@ -5,6 +5,6 @@ namespace Shared_Contracts.Domain.Responses
     public class GetTimeSlotResponse
     {
         public string RequestId { get; set; }
-        public List<TimeSlotDto> Times { get; set; } = new ();
+        public List<TimeSlotData> Times { get; set; } = new ();
     }
 }

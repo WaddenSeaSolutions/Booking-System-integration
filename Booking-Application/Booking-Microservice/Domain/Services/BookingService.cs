@@ -20,12 +20,12 @@ namespace Booking_Microservice.Domain.Services
             return _bookingRepository.DeleteBookingAsync(id);
         }
 
-        public Task<IEnumerable<Booking[]>> GetAllBookings()
+        public Task<IEnumerable<Booking>> GetAllBookings()
         {
             return _bookingRepository.GetAllBookings();
         }
 
-        public Task<IEnumerable<Booking[]>> GetBookingsByUserId(int userId)
+        public Task<IEnumerable<Booking>> GetBookingsByUserId(int userId)
         {
             return _bookingRepository.GetBookingsByUserId(userId);
         }

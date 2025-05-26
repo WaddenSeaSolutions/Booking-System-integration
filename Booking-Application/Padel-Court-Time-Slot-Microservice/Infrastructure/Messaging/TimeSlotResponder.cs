@@ -26,12 +26,12 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Messaging
                     using var scope = _serviceProvider.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<ITimeSlotRepository>();
 
-                    var timeSlots = await repository.GetAvailableTimeSlotsAsync();
+                    var timeSlots = await repository.GetBookedTimeSlotsAsync();
 
                     return new GetTimeSlotResponse
                     {
                         RequestId = request.RequestId,
-                        Times = timeSlots.Select(ts => new TimeSlotDto
+                        Times = timeSlots.Select(ts => new TimeSlotData
                         {
                             Id = ts.Id,
                             StartTime = ts.StartTime,

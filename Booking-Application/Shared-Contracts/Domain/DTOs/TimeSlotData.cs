@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shared_Contracts.Domain.DTOs
 {
-    public class TimeSlotDto
+    public class TimeSlotData
     {
         public string Id { get; set; }
         public DateTime StartTime { get; set; }

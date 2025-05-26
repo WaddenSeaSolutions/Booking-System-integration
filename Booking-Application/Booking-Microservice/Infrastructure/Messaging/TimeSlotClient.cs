@@ -12,7 +12,7 @@ namespace Booking_Microservice.Infrastructure.Messaging
         {
             _bus = bus;
         }
-        public async Task<List<TimeSlotDto>> GetTimeSlotsAsync()
+        public async Task<List<TimeSlotData>> GetTimeSlotsAsync()
         {
             var request = new GetTimeSlotRequest();
             var response = await _bus.Rpc.RequestAsync<GetTimeSlotRequest, GetTimeSlotResponse>(request);
