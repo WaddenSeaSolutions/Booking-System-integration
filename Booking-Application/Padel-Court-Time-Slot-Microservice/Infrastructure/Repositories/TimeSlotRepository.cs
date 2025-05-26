@@ -22,11 +22,10 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Repositories
             return await _timeSlots.Find(filter).ToListAsync();
         }
 
-        public Task<IEnumerable<TimeSlot>> GetBookedTimeSlotsAsync()
+        public async Task<IEnumerable<TimeSlot>> GetBookedTimeSlotsAsync()
         {
-
-
-            throw new NotImplementedException();
+            var filter = Builders<TimeSlot>.Filter.Eq(t => t.IsAvailable, false);
+            return await _timeSlots.Find(filter).ToListAsync();
         }
     }
 }

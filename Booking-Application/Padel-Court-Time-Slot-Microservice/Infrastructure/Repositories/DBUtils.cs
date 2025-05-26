@@ -6,7 +6,7 @@ public class DBUtils
 
     static DBUtils()
     {
-        ProperlyFormattedConnectionString = "mongodb://paddleuser:password@paddlecourtdb:27017/paddlecourttimeslotdb";
+        ProperlyFormattedConnectionString = "mongodb://myuser:mypassword@paddletimedb:27017/paddletimedb?authSource=admin";
 
     }
 }

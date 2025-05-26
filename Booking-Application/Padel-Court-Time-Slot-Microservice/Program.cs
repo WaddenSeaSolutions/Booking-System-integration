@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IMongoClient>(sp =>
     new MongoClient(DBUtils.ProperlyFormattedConnectionString));
+builder.Services.AddScoped<IMongoDatabase>(sp =>
+    sp.GetRequiredService<IMongoClient>().GetDatabase("paddletimedb"));
 builder.Services.AddSingleton(RabbitHutch.CreateBus("host=rabbitmq;username=rabbit;password=rabbitpw;timeout=60"));
 builder.Services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
 builder.Services.AddScoped<ITimeSlotService, TimeSlotService>();
