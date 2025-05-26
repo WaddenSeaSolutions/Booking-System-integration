@@ -20,11 +20,10 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Repositories
         {
             return await _timeSlots.Find(_ => true).ToListAsync();
         }
-
+        
         public async Task AddTimeSlotAsync(TimeSlot timeSlot)
         {
             await _timeSlots.InsertOneAsync(timeSlot);
-        }
 
     }
 }
