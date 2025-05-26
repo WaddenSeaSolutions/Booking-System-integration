@@ -1,37 +1,6 @@
 {
     "Routes": [
         {
-            "UpstreamPathTemplate": "/api/user/register",
-            "UpstreamHttpMethod": [ "Post" ],
-            "DownstreamPathTemplate": "/api/user/register",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "user-microservice",
-                    "Port": 80
-                }
-            ],
-            "RateLimitOptions": {
-                "ClientWhitelist": [],
-                "EnableRateLimiting": true,
-                "Period": "10s",
-                "PeriodTimespan": 10,
-                "Limit": 2
-            }
-        },
-        {
-            "UpstreamPathTemplate": "/api/user/login",
-            "UpstreamHttpMethod": [ "Post" ],
-            "DownstreamPathTemplate": "/api/user/login",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "user-microservice",
-                    "Port": 80
-                }
-            ]
-        },
-        {
             "UpstreamPathTemplate": "/api/booking",
             "UpstreamHttpMethod": [ "Get" ],
             "DownstreamPathTemplate": "/api/booking",
