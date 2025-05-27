@@ -10,10 +10,7 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     config.SetBasePath(env.ContentRootPath)
         .AddJsonFile("appsettings.json", true, true)
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
-        //.AddJsonFile("Configuration/ocelot.user-microservice.json", true, true)
-        //.AddJsonFile("Configuration/ocelot.booking-microservice.json", true, true)
-        //.AddJsonFile("Configuration/ocelot.global.json", true, true)
-        .AddOcelot("Configuration", env as IWebHostEnvironment) // will match all '^ocelot\.(.*?)\.json$' files and merge them into a single configuration
+        .AddOcelot("Configuration", env as IWebHostEnvironment)
         .AddEnvironmentVariables();
 });
 

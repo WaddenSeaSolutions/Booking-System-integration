@@ -4,7 +4,7 @@ services:
   user-microservice:
     build:
       context: ./Booking-Application
-      dockerfile: Booking-Microservice/Dockerfile
+      dockerfile: User-Microservice/Dockerfile
     ports:
       - "5001:80"
     environment:

@@ -1,5 +1,6 @@
 using Dapper;
 using MySqlConnector;
+using System.Data;
 using User_Microservice.Domain.Models;
 
 namespace User_Microservice.Infrastructure.Repositories;
@@ -15,19 +16,41 @@ public class UserRepository
 
     public User RegisterUser(User user)
     {
-        var sql = @"INSERT INTO Users (Username, Email, Password) 
-                            VALUES (@Username, @Email, @Password);
-                            SELECT LAST_INSERT_ID();";
-
-        int userId = _connection.ExecuteScalar<int>(sql, new
+        if (_connection.State != ConnectionState.Open)
         {
-            user.Username,
-            user.Email,
-            user.Password
-        });
+            _connection.Open();
+        }
+        using (var transaction = _connection.BeginTransaction())
+        {
+            var existingUser = _connection.QueryFirstOrDefault<User>(
+                @"SELECT * FROM Users WHERE Username = @Username OR Email = @Email;",
+                new { user.Username, user.Email },
+                transaction: transaction
+            );
 
-        user.Id = userId;
-        return user;
+            if (existingUser != null)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("User already exists");
+            }
+
+            var sql = @"INSERT INTO Users (Username, Email, Password) 
+                    VALUES (@Username, @Email, @Password);
+                    SELECT LAST_INSERT_ID();";
+
+            int userId = _connection.ExecuteScalar<int>(sql, new
+            {
+                user.Username,
+                user.Email,
+                user.Password
+            }, transaction: transaction);
+
+            user.Id = userId;
+
+            transaction.Commit();
+
+            return user;
+        }
     }
 
     public User GetUserByUsername(string username)

@@ -33,7 +33,7 @@ namespace Booking_Microservice.API.Controllers
             try
             {
                 Booking createdBooking = await _bookingService.CreateBooking(booking);
-                return Ok(createdBooking); // Eller CreatedAtAction hvis du vil have den tilbage
+                return Ok(createdBooking);
             }
             catch (PostgresException ex)
             {
@@ -78,7 +78,6 @@ namespace Booking_Microservice.API.Controllers
         }
 
 
-        // Helper method to extract and validate UserId from the request headers
         private bool TryGetUserIdFromRequest(out int userId, out IActionResult errorResult)
         {
             userId = default;

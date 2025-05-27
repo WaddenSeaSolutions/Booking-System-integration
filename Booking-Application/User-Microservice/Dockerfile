@@ -10,19 +10,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["User-Microservice.csproj", "."]
-RUN dotnet restore "./User-Microservice.csproj"
+COPY ["User-Microservice/User-Microservice.csproj", "User-Microservice/"]
+RUN dotnet restore "User-Microservice/User-Microservice.csproj"
 
 # Copy the remaining source code
 COPY . .
 
 # Build the application
-RUN dotnet build "./User-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/User-Microservice"
+RUN dotnet build "User-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish the application
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./User-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "User-Microservice.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final runtime image
 FROM base AS final
