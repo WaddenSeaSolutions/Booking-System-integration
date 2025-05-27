@@ -87,7 +87,6 @@ namespace Booking_Microservice.API.Controllers
         public async Task<IActionResult> GetPaddleCourts()
         {
             var paddleCourts = await _paddleCourtClient.GetPaddleCourtsAsync();
-            Console.WriteLine("Paddle courts retrieved successfully.");
             return new OkObjectResult(paddleCourts);
         }
     }
