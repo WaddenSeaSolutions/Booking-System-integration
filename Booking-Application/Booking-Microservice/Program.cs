@@ -24,7 +24,6 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
-// Enable Swagger in all environments (optional)
 app.UseSwagger();
 app.UseSwaggerUI();
 

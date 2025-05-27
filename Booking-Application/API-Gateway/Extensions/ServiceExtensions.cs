@@ -31,12 +31,11 @@ namespace API_Gateway.Extensions
                 };
             });
 
-            // Define the "Anonymous" policy
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Anonymous", policy =>
                 {
-                    policy.RequireAssertion(context => true); // Always allows access
+                    policy.RequireAssertion(context => true);
                 });
             });
 
@@ -47,7 +46,7 @@ namespace API_Gateway.Extensions
         public static WebApplication UseApiGateway(this WebApplication app)
         {
             app.UseAuthentication();
-            app.UseAuthorization(); // This order is important!
+            app.UseAuthorization();
             app.UseOcelot().Wait();
             return app;
         }

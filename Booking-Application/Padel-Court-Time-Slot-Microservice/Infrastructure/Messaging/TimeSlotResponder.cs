@@ -21,10 +21,8 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Messaging
         {
             try
             {
-                // For adding a time slot
                 _bus.Rpc.RespondAsync<AddTimeSlotRequest, AddTimeSlotResponse>(async request =>
                 {
-                    Console.WriteLine("Received request to add a new time slot");
                     using var scope = _serviceProvider.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<ITimeSlotRepository>();
 
@@ -49,7 +47,6 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Messaging
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error registering RespondAsync: " + ex);
                 return Task.CompletedTask;
             }
         }
