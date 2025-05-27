@@ -12,7 +12,7 @@ namespace Booking_Microservice.Infrastructure.Messaging
         {
             _bus = bus;
         }
-        public async Task<AddTimeSlotResponse> CreateTimeSlotAsync(int courtId, DateTime date, DateTime startTime, DateTime endTime)
+        public async Task<AddTimeSlotResponse> CreateTimeSlotAsync(string courtId, DateTime date, DateTime startTime, DateTime endTime)
         {
             var request = new AddTimeSlotRequest
             {

@@ -1,7 +1,6 @@
 ﻿using Booking_Microservice.Application.Interfaces;
 using Booking_Microservice.Domain.Models;
 using Dapper;
-using MySqlConnector;
 using Npgsql;
 using System.Data;
 
@@ -9,8 +8,8 @@ namespace Booking_Microservice.Infrastructure.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
-        private readonly MySqlConnection _connection;
-        public BookingRepository(MySqlConnection connection)
+        private readonly NpgsqlConnection _connection;
+        public BookingRepository(NpgsqlConnection connection)
         {
             _connection = connection;
         }
@@ -31,8 +30,8 @@ namespace Booking_Microservice.Infrastructure.Repositories
                         FROM bookings
                         WHERE court_id = @CourtId
                         AND (
-                        (@StartTime < end_time) AND
-                        (@EndTime > start_time)
+                            (@StartTime < end_time) AND
+                            (@EndTime > start_time)
                         ) LIMIT 1;";
 
                     var conflict = await _connection.QueryFirstOrDefaultAsync<int?>(
@@ -40,56 +39,56 @@ namespace Booking_Microservice.Infrastructure.Repositories
                         new { booking.CourtId, booking.StartTime, booking.EndTime },
                         transaction
                     );
-
                     if (conflict != null)
                     {
-                        transaction.Rollback();
                         throw new InvalidOperationException("A booking already exists for this court.");
                     }
-
                     var insertSql = @"
-                INSERT INTO bookings (
-                    user_id,
-                    court_id,
-                    total_price,
-                    start_time,
-                    end_time,
-                    status,
-                    created_at
-                )
-                VALUES (
-                    @UserId,
-                    @CourtId,
-                    @TotalPrice,
-                    @StartTime,
-                    @EndTime,
-                    @Status,
-                    @CreatedAt
-                ) RETURNING *;";
+                    INSERT INTO bookings (
+                        user_id,
+                        court_id,
+                        total_price,
+                        start_time,
+                        end_time,
+                        created_at
+                    )
+                    VALUES (
+                        @UserId,
+                        @CourtId,
+                        @TotalPrice,
+                        @StartTime,
+                        @EndTime,
+                        @CreatedAt
+                    ) RETURNING 
+                        id AS ""Id"",
+                        user_id AS ""UserId"",
+                        court_id AS ""CourtId"",
+                        total_price AS ""TotalPrice"",
+                        start_time AS ""StartTime"",
+                        end_time AS ""EndTime"",
+                        created_at AS ""CreatedAt"";";
 
                     var createdBooking = await _connection.QuerySingleOrDefaultAsync<Booking>(
                         insertSql,
                         booking,
                         transaction
                     );
-
                     if (createdBooking == null)
                     {
-                        transaction.Rollback();
                         throw new InvalidOperationException("Booking creation failed.");
                     }
 
-                    transaction.Commit();
+                    // Only commit if everything succeeded
+                    await transaction.CommitAsync();
                     return createdBooking;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    try { await transaction.RollbackAsync(); } catch { /* ignore rollback errors */ }
                     throw;
                 }
             }
         }
-
 
         public async Task<bool> DeleteBookingAsync(int id)
         {
@@ -100,7 +99,7 @@ namespace Booking_Microservice.Infrastructure.Repositories
                 var rowsAffected = await _connection.ExecuteAsync(sql, new { Id = id });
                 return rowsAffected > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -116,8 +115,7 @@ namespace Booking_Microservice.Infrastructure.Repositories
                     total_price AS TotalPrice,
                     start_time AS StartTime,
                     end_time AS EndTime,
-                    created_at AS CreatedAt,
-                    status
+                    created_at AS CreatedAt
                 FROM bookings;";
 
             try
@@ -125,7 +123,7 @@ namespace Booking_Microservice.Infrastructure.Repositories
                 var bookings = await _connection.QueryAsync<Booking>(sql);
                 return bookings;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -141,8 +139,7 @@ namespace Booking_Microservice.Infrastructure.Repositories
                     total_price AS TotalPrice,
                     start_time AS StartTime,
                     end_time AS EndTime,
-                    created_at AS CreatedAt,
-                    status
+                    created_at AS CreatedAt
                 FROM bookings
                 WHERE user_id = @UserId;";
 
@@ -151,7 +148,7 @@ namespace Booking_Microservice.Infrastructure.Repositories
                 var bookings = await _connection.QueryAsync<Booking>(sql, new { UserId = userId });
                 return bookings;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

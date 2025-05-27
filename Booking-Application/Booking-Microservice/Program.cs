@@ -3,7 +3,7 @@ using Booking_Microservice.Domain.Services;
 using Booking_Microservice.Infrastructure.Messaging;
 using Booking_Microservice.Infrastructure.Repositories;
 using EasyNetQ;
-using MySqlConnector;
+using Npgsql;
 using Paddle_Court_Microservice.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +15,9 @@ builder.Services.AddScoped<PaddleCourtClient>();
 builder.Services.AddScoped<TimeSlotClient>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<MySqlConnection>(_ =>
-    new MySqlConnection(DBUtils.ProperlyFormattedConnectionString));
+builder.Services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(DBUtils.ProperlyFormattedConnectionString));
+
+
 
 
 builder.Services.AddSwaggerGen();

@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] User user)
+    public IActionResult Register([FromBody] User user)
     {
         try
         {

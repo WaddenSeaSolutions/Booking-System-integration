@@ -31,8 +31,4 @@ app.UseEndpoints(e => e.MapControllers());
 
 app.UseApiGateway();
 
-app.UseAuthentication();
-app.UseAuthorization();
-await app.UseOcelot();
-
 app.Run();

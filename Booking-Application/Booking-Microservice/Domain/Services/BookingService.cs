@@ -17,20 +17,30 @@ namespace Booking_Microservice.Domain.Services
         }
         public async Task<Booking> CreateBooking(Booking booking)
         {
-            var timeSlotResponse = await _timeSlotClient.CreateTimeSlotAsync(
-                int.Parse(booking.CourtId),
-                booking.StartTime.Date,
-                booking.StartTime,
-                booking.EndTime
-            );
+            var createdBooking = await _bookingRepository.CreateBooking(booking);
 
+            if (createdBooking == null)
+            {
+                // Booking creation failed, do not proceed
+                return null;
+            }
+            var timeSlotResponse = await _timeSlotClient.CreateTimeSlotAsync(
+                createdBooking.CourtId,
+                createdBooking.StartTime.Date,
+                createdBooking.StartTime,
+                createdBooking.EndTime
+            );
             if (!timeSlotResponse.Success)
             {
+                // Roll back booking if timeslot reservation fails
+                await _bookingRepository.DeleteBookingAsync(createdBooking.Id);
                 return null;
             }
 
-            return await _bookingRepository.CreateBooking(booking);
+            // Both booking and timeslot reservation succeeded
+            return createdBooking;
         }
+
 
         public Task<bool> DeleteBookingAsync(int id)
         {

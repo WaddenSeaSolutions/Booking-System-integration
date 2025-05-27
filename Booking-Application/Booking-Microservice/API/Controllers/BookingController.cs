@@ -49,21 +49,16 @@ namespace Booking_Microservice.API.Controllers
                 Booking createdBooking = await _bookingService.CreateBooking(booking);
                 return Ok(createdBooking);
             }
-            catch (PostgresException ex)
-            {
-                if (ex.SqlState == "23505" || ex.SqlState == "23P01")
-                {
-                    return Conflict(new { message = "The requested time slot is already booked for this court." });
-                }
-                else
-                {
-                    return StatusCode(500, new { message = "A database error occurred. Please try again later." });
-                }
-            }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An unexpected server error occurred. Please try again later." });
+                return StatusCode(500, new
+                {
+                    message = "An unexpected server error occurred. Please try again later.",
+                    error = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
             }
+
         }
 
         [HttpDelete]
@@ -87,7 +82,6 @@ namespace Booking_Microservice.API.Controllers
         public async Task<IActionResult> GetPaddleCourts()
         {
             var paddleCourts = await _paddleCourtClient.GetPaddleCourtsAsync();
-            Console.WriteLine("Paddle courts retrieved successfully.");
             return new OkObjectResult(paddleCourts);
         }
     }
