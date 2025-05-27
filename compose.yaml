@@ -58,15 +58,14 @@ services:
       - "3307:3306"
 
   bookingdb:
-    image: mariadb:latest
-    container_name: bookingdb
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: bookingdb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
-    ports:
-      - "3308:3306"
+      image: postgres:16
+      container_name: bookingdb
+      environment:
+        POSTGRES_DB: bookingdb
+        POSTGRES_USER: myuser
+        POSTGRES_PASSWORD: mypassword
+      ports:
+      - "3308:5432"
 
   paddlecourtdb:
     image: mongo:6

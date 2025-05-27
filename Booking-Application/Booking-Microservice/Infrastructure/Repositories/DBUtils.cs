@@ -6,7 +6,7 @@
 
         static DBUtils()
         {
-            ProperlyFormattedConnectionString = "Server=bookingdb;User=myuser;Password=mypassword;Port=3306;Database=bookingdb;Pooling=true;";
+            ProperlyFormattedConnectionString = "Host=bookingdb;Username=myuser;Password=mypassword;Port=5432;Database=bookingdb;Pooling=true;";
 
         }
     }

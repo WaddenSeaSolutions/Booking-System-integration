@@ -20,6 +20,6 @@ CREATE TABLE bookings (
 
 ALTER TABLE bookings
 ADD CONSTRAINT EXCL_CourtTimeOverlap EXCLUDE USING GIST (
-    court_id WITH =,                           -- The constraint applies to the same court
-    tsrange(start_time, end_time) WITH &&      -- And the time intervals must not overlap
+    court_id WITH =,
+    tstzrange(start_time, end_time) WITH &&
 );

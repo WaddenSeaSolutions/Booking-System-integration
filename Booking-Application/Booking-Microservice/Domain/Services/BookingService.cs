@@ -26,12 +26,9 @@ namespace Booking_Microservice.Domain.Services
 
             if (!timeSlotResponse.Success)
             {
-                // Optionally, you can log or return null or throw an exception
-                // depending on your error handling strategy
                 return null;
             }
 
-            // Only create the booking if the time slot was successfully created
             return await _bookingRepository.CreateBooking(booking);
         }
 
