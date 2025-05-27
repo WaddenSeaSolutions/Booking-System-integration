@@ -28,7 +28,7 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Messaging
 
                     var newTimeSlot = new TimeSlot
                     {
-                        CourtId = request.CourtId,
+                        CourtId = request.CourtId.ToString(),
                         StartTime = request.StartTime,
                         EndTime = request.EndTime,
                         Date = request.Date
