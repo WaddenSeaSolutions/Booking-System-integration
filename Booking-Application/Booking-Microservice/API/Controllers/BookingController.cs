@@ -31,25 +31,16 @@ namespace Booking_Microservice.API.Controllers
 
             var token = authHeader.Substring("Bearer ".Length).Trim();
 
-            // Parse JWT token
             var handler = new JwtSecurityTokenHandler();
 
             JwtSecurityToken jwtToken;
-            try
-            {
-                jwtToken = handler.ReadJwtToken(token);
-            }
-            catch
-            {
-                return Unauthorized("Invalid token format");
-            }
+            jwtToken = handler.ReadJwtToken(token);
+
 
             var subClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
             if (subClaim == null)
                 return BadRequest("sub claim not found");
-
-            Console.WriteLine($"Sub claim value: {subClaim}");
 
             booking.UserId = int.Parse(subClaim);
 
@@ -98,43 +89,6 @@ namespace Booking_Microservice.API.Controllers
             var paddleCourts = await _paddleCourtClient.GetPaddleCourtsAsync();
             Console.WriteLine("Paddle courts retrieved successfully.");
             return new OkObjectResult(paddleCourts);
-        }
-
-
-        private bool TryGetUserIdFromRequest(out int userId, out IActionResult errorResult)
-        {
-            userId = default;
-            errorResult = null;
-
-            if (!Request.Headers.TryGetValue("UserId", out var userIdHeaderValues))
-            {
-                errorResult = Unauthorized("User ID header is missing. Please ensure you are authenticated.");
-                return false;
-            }
-
-            var userIdString = userIdHeaderValues.FirstOrDefault();
-
-            if (string.IsNullOrEmpty(userIdString))
-            {
-                errorResult = Unauthorized("User ID header is empty or invalid.");
-                return false;
-            }
-
-            try
-            {
-                userId = int.Parse(userIdString);
-                return true;
-            }
-            catch (FormatException)
-            {
-                errorResult = BadRequest("Invalid User ID format in header. User ID must be a valid integer.");
-                return false;
-            }
-            catch (OverflowException)
-            {
-                errorResult = BadRequest("Invalid User ID format in header. User ID value is too large or too small.");
-                return false;
-            }
         }
     }
 }
