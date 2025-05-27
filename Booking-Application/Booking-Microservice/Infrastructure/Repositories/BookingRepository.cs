@@ -3,6 +3,7 @@ using Booking_Microservice.Domain.Models;
 using Dapper;
 using MySqlConnector;
 using Npgsql;
+using System.Data;
 
 namespace Booking_Microservice.Infrastructure.Repositories
 {
@@ -16,7 +17,37 @@ namespace Booking_Microservice.Infrastructure.Repositories
 
         public async Task<Booking> CreateBooking(Booking booking)
         {
-            var sql = @"
+            if (_connection.State != ConnectionState.Open)
+            {
+                await _connection.OpenAsync();
+            }
+
+            using (var transaction = _connection.BeginTransaction())
+            {
+                try
+                {
+                    var conflictSql = @"
+                        SELECT 1
+                        FROM bookings
+                        WHERE court_id = @CourtId
+                        AND (
+                        (@StartTime < end_time) AND
+                        (@EndTime > start_time)
+                        ) LIMIT 1;";
+
+                    var conflict = await _connection.QueryFirstOrDefaultAsync<int?>(
+                        conflictSql,
+                        new { booking.CourtId, booking.StartTime, booking.EndTime },
+                        transaction
+                    );
+
+                    if (conflict != null)
+                    {
+                        transaction.Rollback();
+                        throw new InvalidOperationException("A booking already exists for this court.");
+                    }
+
+                    var insertSql = @"
                 INSERT INTO bookings (
                     user_id,
                     court_id,
@@ -34,29 +65,31 @@ namespace Booking_Microservice.Infrastructure.Repositories
                     @EndTime,
                     @Status,
                     @CreatedAt
-                )
-                RETURNING *;";
+                ) RETURNING *;";
 
-            try
-            {
-                var createdBooking = await _connection.QuerySingleOrDefaultAsync<Booking>(sql, booking);
+                    var createdBooking = await _connection.QuerySingleOrDefaultAsync<Booking>(
+                        insertSql,
+                        booking,
+                        transaction
+                    );
 
-                if (createdBooking == null)
-                {
-                    throw new InvalidOperationException("Booking creation failed, no data returned from database.");
+                    if (createdBooking == null)
+                    {
+                        transaction.Rollback();
+                        throw new InvalidOperationException("Booking creation failed.");
+                    }
+
+                    transaction.Commit();
+                    return createdBooking;
                 }
-
-                return createdBooking;
-            }
-            catch (PostgresException ex)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw;
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
+
 
         public async Task<bool> DeleteBookingAsync(int id)
         {
