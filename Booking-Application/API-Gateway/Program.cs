@@ -1,5 +1,6 @@
 using API_Gateway.Extensions;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,5 +30,9 @@ app.UseRouting();
 app.UseEndpoints(e => e.MapControllers());
 
 app.UseApiGateway();
+
+app.UseAuthentication();
+app.UseAuthorization();
+await app.UseOcelot();
 
 app.Run();

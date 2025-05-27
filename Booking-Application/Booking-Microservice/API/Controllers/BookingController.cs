@@ -4,6 +4,7 @@ using Booking_Microservice.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using Paddle_Court_Microservice.Infrastructure.Messaging;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace Booking_Microservice.API.Controllers
@@ -23,12 +24,34 @@ namespace Booking_Microservice.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBooking([FromBody] Booking booking)
         {
-            if (TryGetUserIdFromRequest(out int userId, out IActionResult errorResult) == false)
+            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                return Unauthorized("Missing or invalid Authorization header");
+
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+
+            // Parse JWT token
+            var handler = new JwtSecurityTokenHandler();
+
+            JwtSecurityToken jwtToken;
+            try
             {
-                return errorResult;
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                return Unauthorized("Invalid token format");
             }
 
-            booking.UserId = userId;
+            var subClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            if (subClaim == null)
+                return BadRequest("sub claim not found");
+
+            Console.WriteLine($"Sub claim value: {subClaim}");
+
+            booking.UserId = int.Parse(subClaim);
 
             try
             {

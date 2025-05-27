@@ -46,6 +46,20 @@ services:
       - paddlecourtdb
       - rabbitmq
 
+  paddle-timeslot-microservice:
+    build:
+      context: ../Padel-Court-Time-Slot-Microservice
+      dockerfile: Dockerfile
+    ports:
+      - "5004:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MongoSettings__ConnectionString=mongodb://myuser:mypassword@paddletimedb:27017/paddletimedb
+    depends_on:
+      - paddletimedb
+      - rabbitmq
+
   userdb:
     image: mariadb:latest
     container_name: userdb
