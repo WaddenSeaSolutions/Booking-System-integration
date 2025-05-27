@@ -25,7 +25,6 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
             { 
                 _bus.Rpc.RespondAsync<GetPaddleCourtsRequest, GetPaddleCourtsResponse>(async request =>
                 {
-                    Console.WriteLine("📨 Received request for paddle courts");
                     using var scope = _serviceProvider.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<IPaddleCourtRepository>();
 
@@ -46,7 +45,6 @@ namespace Paddle_Court_Microservice.Infrastructure.Messaging
             }
             catch (Exception ex)
             {
-                Console.WriteLine("❌ Error registering RespondAsync: " + ex);
                 return Task.CompletedTask;
             }
         }
