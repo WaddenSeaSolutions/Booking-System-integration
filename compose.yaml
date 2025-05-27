@@ -48,8 +48,8 @@ services:
 
   paddle-timeslot-microservice:
     build:
-      context: ../Padel-Court-Time-Slot-Microservice
-      dockerfile: Dockerfile
+      context: ./Booking-Application
+      dockerfile: Padel-Court-Time-Slot-Microservice/Dockerfile
     ports:
       - "5004:80"
     environment:
