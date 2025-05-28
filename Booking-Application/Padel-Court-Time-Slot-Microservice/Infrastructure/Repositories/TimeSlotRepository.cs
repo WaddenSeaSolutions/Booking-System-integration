@@ -9,11 +9,9 @@ namespace Padel_Court_Time_Slot_Microservice.Infrastructure.Repositories
     {
         private readonly IMongoCollection<TimeSlot> _timeSlots;
 
-        public TimeSlotRepository(IConfiguration config)
+        public TimeSlotRepository(IMongoDatabase database)
         {
-            var client = new MongoClient(config.GetConnectionString("MongoDb"));
-            var database = client.GetDatabase("PadelCourttimeslotDb");
-            _timeSlots = database.GetCollection<TimeSlot>("TimeSlots");
+            _timeSlots = database.GetCollection<TimeSlot>("paddletimedb");
         }
 
         public async Task<IEnumerable<TimeSlot>> GetAllTimeSlotsAsync()
