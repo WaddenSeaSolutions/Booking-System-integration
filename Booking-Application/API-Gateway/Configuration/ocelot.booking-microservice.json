@@ -94,13 +94,5 @@
           "Limit": 1
         }
       }
-    ],
-    "GlobalConfiguration": {
-        "RateLimitOptions": {
-            "DisableRateLimitHeaders": false,
-            "QuotaExceededMessage": "You have send send too many request, try again later",
-            "HttpStatusCode": 429,
-            "ClientIdHeader": "X-Client-ID"
-        }
-    }
+    ]
 }

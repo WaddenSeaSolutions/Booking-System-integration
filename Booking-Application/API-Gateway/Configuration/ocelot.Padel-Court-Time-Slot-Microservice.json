@@ -1,0 +1,23 @@
+﻿{
+    "Routes": [
+        {
+            "UpstreamPathTemplate": "/api/timeslot/booked",
+            "UpstreamHttpMethod": [ "Get" ],
+            "DownstreamPathTemplate": "/api/timeslot/booked",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "padel-court-time-slot-microservice",
+                    "Port": 80
+                }
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "10s",
+                "PeriodTimespan": 10,
+                "Limit": 2
+            }
+        }
+    ]
+}
