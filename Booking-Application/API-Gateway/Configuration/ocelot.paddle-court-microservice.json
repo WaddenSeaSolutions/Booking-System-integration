@@ -1,0 +1,23 @@
+{
+    "Routes": [
+        {
+            "UpstreamPathTemplate": "/api/paddlecourt",
+            "UpstreamHttpMethod": [ "Get" ],
+            "DownstreamPathTemplate": "/api/paddlecourt",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "paddle-court-microservice",
+                    "Port": 80
+                }
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "10s",
+                "PeriodTimespan": 10,
+                "Limit": 2
+            }
+        }
+    ]
+}
